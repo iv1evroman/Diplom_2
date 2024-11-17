@@ -9,8 +9,8 @@ class TestRegistration:
         response = profile_methods.create_new_profile(email, data.PASSWORD, data.NAME)
         assert response[0] == 200 and 'accessToken' in response[1]
         tok = response[1].get("accessToken")
-        fomatted_token = tok[7:]
-        r = profile_methods.delete_profile(fomatted_token)
+        formatted_token = tok[7:]
+        r = profile_methods.delete_profile(formatted_token)
         print(r[0])
         print(r[1])
 

@@ -7,3 +7,5 @@ NAME = 'Рома123456'
 PASSWORD = '123456'
 EMAIL = 'romatest@yandex.ru'
 NEW_NAME = 'Василий'
+INGREDIENTS = ['61c0c5a71d1f82001bdaaa6f', '61c0c5a71d1f82001bdaaa70']
+INCORRECT_INGREDIENTS = ['61c0c5a71d1f82001qwert6f', '61c0c5a71d1f82001qwert70']
