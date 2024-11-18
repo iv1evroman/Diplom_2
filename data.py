@@ -9,3 +9,8 @@ EMAIL = 'romatest@yandex.ru'
 NEW_NAME = 'Василий'
 INGREDIENTS = ['61c0c5a71d1f82001bdaaa6f', '61c0c5a71d1f82001bdaaa70']
 INCORRECT_INGREDIENTS = ['61c0c5a71d1f82001qwert6f', '61c0c5a71d1f82001qwert70']
+UPDATED_INFO = {
+"email": "romatesting11@yandex.ru",
+"password": "123456",
+"name": "Роман"
+}

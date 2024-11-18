@@ -1,5 +1,4 @@
 import requests
-
 import data
 from data import BASE_URL, ORDER_URL, PASSWORD, NAME, REGISTER_URL
 import allure
@@ -28,3 +27,8 @@ class OrderMethods:
         }
         response = requests.post(f'{BASE_URL}{ORDER_URL}', headers={'Authorization': formatted_token}, data=payload)
         return response.status_code, response.json()
+
+    @allure.step('получаем данные о заказах')
+    def get_orders(self):
+        response = requests.get(f'{BASE_URL}, {ORDER_URL}')
+        return response.status_code, response.content

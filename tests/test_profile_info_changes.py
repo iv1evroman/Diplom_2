@@ -1,21 +1,19 @@
 import data
 from helpers import Helpers
 import allure
+import requests
+from data import BASE_URL, USER_URL
 
 class TestProfileInfoChanges:
     @allure.title('Проверка на успешное изменение имени пользователя')
     def test_change_profile_name(self, profile_methods):
-        email = Helpers.random_email(self)
-        r = profile_methods.create_new_profile(email, data.PASSWORD, data.NAME)
-        print(r[0])
-        print(r[1])
-        tok = r[1].get("accessToken")
-        formatted_token = tok[7:]
-        print((formatted_token))
-        new_data = {
-            "name": "Дмитрий"
+        r = profile_methods.create_user_and_get_token_and_email()
+        new = {
+            "email": r[1],
+            "password": "123456",
+            "name": "Роман"
         }
-        response = profile_methods.change_profile_data(f'{formatted_token}', new_data)
-        print(response[0])
-        print(response[1])
+        response = requests.patch(f'{BASE_URL},{USER_URL}', headers={'Authorization': str(r)}, data=new)
+        print(response.status_code)
+        print(response.text)
 

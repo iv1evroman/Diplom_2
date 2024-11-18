@@ -35,7 +35,7 @@ class ProfileMethods:
         response = requests.delete(f'{BASE_URL}{USER_URL}', headers={'Authorization': token})
         return response.status_code, response.json()
 
-    def create_user_and_get_token(self):
+    def create_user_and_get_token_and_email(self):
         payload = {
             "email": Helpers.random_email(self),
             "password": data.PASSWORD,
@@ -43,5 +43,10 @@ class ProfileMethods:
         }
         response = requests.post(f'{BASE_URL}{REGISTER_URL}', data=payload)
         tok = response.json().get("accessToken")
-        formatted_token = tok[7:]
-        return formatted_token
+        formatted_token = str(tok[7:])
+        payload1 = {
+            "email": Helpers.random_email(self),
+            "password": data.PASSWORD
+        }
+        requests.post(f'{BASE_URL}{LOGIN_URL}', data=payload1)
+        return formatted_token, payload1.get("email")
