@@ -3,6 +3,8 @@ import data
 from data import BASE_URL, ORDER_URL, PASSWORD, NAME, REGISTER_URL
 import allure
 from helpers import Helpers
+
+
 class OrderMethods:
     @allure.step('создаем заказ без авторизации')
     def create_order_without_authorization(self, ingredients):
@@ -29,6 +31,6 @@ class OrderMethods:
         return response.status_code, response.json()
 
     @allure.step('получаем данные о заказах')
-    def get_orders(self):
-        response = requests.get(f'{BASE_URL}, {ORDER_URL}')
-        return response.status_code, response.content
+    def get_orders_with_authorization(self, token):
+        response = requests.get(f'{BASE_URL}, {ORDER_URL}', headers={'Authorization': token})
+        return response.status_code, response.json()
