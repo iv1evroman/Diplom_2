@@ -13,21 +13,23 @@ class TestCreateOrder:
 
     @allure.title('Проверка на создание заказа c авторизацией')
     def test_create_order_with_authorization(self, order_methods):
-        response = order_methods.create_order_with_authorization(data.INGREDIENTS)
+        token = order_methods.get_token(Helpers.random_email(self), data.PASSWORD, data.NAME)
+        response = order_methods.create_order_with_authorization(data.INGREDIENTS, token)
         assert response[0] == 200 and "success" in response[1]
 
     @allure.title('Проверка на создание заказа без авторизации и без ингредиентов')
-    def test_test_create_order_without_authorization_and_without_ingredients(self, order_methods):
+    def test_create_order_without_authorization_and_without_ingredients(self, order_methods):
         response = order_methods.create_order_without_authorization('')
         assert response[0] == 400 and {"success": False, "message": "Ingredient ids must be provided"} == response[1]
 
     @allure.title('Проверка на создание заказа c авторизацией и без ингредиентов')
-    def test_test_create_order_with_authorization_and_without_ingredients(self, order_methods):
-        response = order_methods.create_order_with_authorization('')
+    def test_create_order_with_authorization_and_without_ingredients(self, order_methods):
+        token = order_methods.get_token(Helpers.random_email(self), data.PASSWORD, data.NAME)
+        response = order_methods.create_order_with_authorization('', token)
         assert response[0] == 400 and {"success": False, "message": "Ingredient ids must be provided"} == response[1]
 
     @allure.title('Проверка на создание заказа без авторизации и c неверным хэшем ингредиентов')
-    def test_test_create_order_without_authorization_and_with_incorrect_ingredients(self, order_methods):
+    def test_create_order_without_authorization_and_with_incorrect_ingredients(self, order_methods):
         payload = {
             "ingredients": data.INCORRECT_INGREDIENTS
         }
@@ -35,7 +37,7 @@ class TestCreateOrder:
         assert response.status_code == 500
 
     @allure.title('Проверка на создание заказа c авторизацией и c неверным хэшем ингредиентов')
-    def test_test_create_order_with_authorization_and_with_incorrect_ingredients(self, order_methods):
+    def test_create_order_with_authorization_and_with_incorrect_ingredients(self, order_methods):
         payload_for_token = {
             "email": Helpers.random_email(self),
             "password": data.PASSWORD,

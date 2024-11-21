@@ -13,7 +13,9 @@ class TestProfileInfoChanges:
             "password": "123456",
             "name": "Роман"
         }
-        response = requests.patch(f'{BASE_URL},{USER_URL}', headers={'Authorization': str(r)}, data=new)
+        print(r[0])
+        print(r[1])
+        response = requests.patch(f'{BASE_URL},{USER_URL}', headers={'Authorization': r[0]}, json=new)
         print(response.status_code)
         print(response.text)
 
