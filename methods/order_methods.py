@@ -1,8 +1,6 @@
 import requests
-import data
-from data import BASE_URL, ORDER_URL, PASSWORD, NAME, REGISTER_URL
+from data import BASE_URL, ORDER_URL, REGISTER_URL
 import allure
-from helpers import Helpers
 
 
 class OrderMethods:
@@ -27,6 +25,7 @@ class OrderMethods:
         response = requests.get(f'{BASE_URL}{ORDER_URL}', headers={'Authorization': f'{token}'})
         return response.status_code, response.json()
 
+    @allure.step('создаем новый профиль и получаем токен')
     def get_token(self, email, password, name):
         payload = {
             "email": email,

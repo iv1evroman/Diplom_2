@@ -9,12 +9,7 @@ class TestRegistration:
         email = Helpers.random_email(self)
         response = profile_methods.create_new_profile(email, data.PASSWORD, data.NAME)
         assert response[0] == 200 and 'accessToken' in response[1]
-        r = profile_methods.login(email, data.PASSWORD)
-        tok = r[1].get("accessToken")
-        formatted_token = tok[7:]
-        re = profile_methods.delete_profile(formatted_token)
-        print(re[0])
-        print(re[1])
+        profile_methods.delete_profile(response[1].get('accessToken'))
 
     @allure.title('Проверка на создание уже существующего пользователя')
     def test_registration_of_existing_profile(self, profile_methods):
