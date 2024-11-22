@@ -19,13 +19,13 @@ class OrderMethods:
         payload = {
             "ingredients": ingredients
         }
-        response = requests.post(f'{BASE_URL}{ORDER_URL}', headers={'Authorization': token}, data=payload)
+        response = requests.post(f'{BASE_URL}{ORDER_URL}', headers={'Authorization': f'{token}'}, data=payload)
         return response.status_code, response.json()
 
     @allure.step('получаем данные о заказах')
     def get_orders_with_authorization(self, token):
-        response = requests.get(f'{BASE_URL}, {ORDER_URL}', headers={'Authorization': token})
-        return response.status_code, response.text
+        response = requests.get(f'{BASE_URL}{ORDER_URL}', headers={'Authorization': f'{token}'})
+        return response.status_code, response.json()
 
     def get_token(self, email, password, name):
         payload = {
@@ -34,6 +34,5 @@ class OrderMethods:
             "name": name
         }
         response = requests.post(f'{BASE_URL}{REGISTER_URL}', data=payload)
-        tok = response.json().get("accessToken")
-        token = str(tok[7:])
+        token = response.json().get("accessToken")
         return token
