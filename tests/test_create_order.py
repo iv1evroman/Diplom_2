@@ -1,0 +1,49 @@
+import allure
+import data
+import requests
+from data import BASE_URL, ORDER_URL
+from helpers import Helpers
+
+
+class TestCreateOrder:
+    @allure.title('Проверка на создание заказа без авторизации')
+    def test_create_order_without_authorization(self, order_methods):
+        response = order_methods.create_order_without_authorization(data.INGREDIENTS)
+        assert response[0] == 200 and "success" in response[1]
+
+    @allure.title('Проверка на создание заказа c авторизацией')
+    def test_create_order_with_authorization(self, order_methods, profile_methods):
+        token = order_methods.get_token(Helpers.random_email(self), data.PASSWORD, data.NAME)
+        response = order_methods.create_order_with_authorization(data.INGREDIENTS, token)
+        assert response[0] == 200 and "success" in response[1]
+        profile_methods.delete_profile(token)
+
+    @allure.title('Проверка на создание заказа без авторизации и без ингредиентов')
+    def test_create_order_without_authorization_and_without_ingredients(self, order_methods):
+        response = order_methods.create_order_without_authorization('')
+        assert response[0] == 400 and {"success": False, "message": "Ingredient ids must be provided"} == response[1]
+
+    @allure.title('Проверка на создание заказа c авторизацией и без ингредиентов')
+    def test_create_order_with_authorization_and_without_ingredients(self, order_methods, profile_methods):
+        token = order_methods.get_token(Helpers.random_email(self), data.PASSWORD, data.NAME)
+        response = order_methods.create_order_with_authorization('', token)
+        assert response[0] == 400 and {"success": False, "message": "Ingredient ids must be provided"} == response[1]
+        profile_methods.delete_profile(token)
+
+    @allure.title('Проверка на создание заказа без авторизации и c неверным хэшем ингредиентов')
+    def test_create_order_without_authorization_and_with_incorrect_ingredients(self, order_methods):
+        payload = {
+            "ingredients": data.INCORRECT_INGREDIENTS
+        }
+        response = requests.post(f'{BASE_URL}{ORDER_URL}', data=payload)
+        assert response.status_code == 500
+
+    @allure.title('Проверка на создание заказа c авторизацией и c неверным хэшем ингредиентов')
+    def test_create_order_with_authorization_and_with_incorrect_ingredients(self, order_methods, profile_methods):
+        token = order_methods.get_token(Helpers.random_email(self), data.PASSWORD, data.NAME)
+        payload = {
+            "ingredients": data.INCORRECT_INGREDIENTS
+        }
+        response = requests.post(f'{BASE_URL}{ORDER_URL}', headers={'Authorization': f'{token}'}, data=payload)
+        assert response.status_code == 500
+        profile_methods.delete_profile(token)

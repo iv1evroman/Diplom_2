@@ -1,0 +1,12 @@
+BASE_URL = 'https://stellarburgers.nomoreparties.site/api/'
+REGISTER_URL = 'auth/register/'
+LOGIN_URL = 'auth/login/'
+USER_URL = 'auth/user/'
+ORDER_URL = 'orders'
+NAME = 'Рома123456'
+PASSWORD = '123456'
+EMAIL = 'romatest@yandex.ru'
+NEW_NAME = 'Василий'
+INGREDIENTS = ["61c0c5a71d1f82001bdaaa6f"]
+INCORRECT_INGREDIENTS = ['61c0c5a71d1f82001qwert6f', '61c0c5a71d1f82001qwert70']
+EMAIL_TO_CHANGE = 'emailtochange@mail.de'
