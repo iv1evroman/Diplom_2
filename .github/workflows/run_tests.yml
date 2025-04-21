@@ -1,0 +1,32 @@
+name: Automated tests
+
+on:
+  workflow_dispatch:
+    inputs:
+      deployment_target:
+        description: Choose target
+        required: true
+        type: choice
+        options:
+          - first_test
+          - second_test
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+      - name: install dependencies
+        run: pip install -r requirements.txt
+      - name: first test
+        if: "github.event.inputs.deployment_target == 'first_test'"
+        run: pytest tests/test_create_order.py
+      - name: second test
+        if: "github.event.inputs.deployment_target == 'second_test'"
+        run: pytest tests/test_get_orders.py
